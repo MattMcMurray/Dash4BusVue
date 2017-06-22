@@ -5,7 +5,7 @@
     <section class="monitor-lockup">
       <div class="container">
         <div class="column">
-          <bus-monitor v-for="monitor in getSortedMonitors" 
+          <bus-monitor v-for="monitor in getSortedArrivals" 
                        :key="monitor.arrival" 
                        :username="monitor.user" 
                        :route="monitor.route" 
@@ -25,30 +25,15 @@ export default {
   components: {NavBar, BusMonitor},
   data () {
     return {
-      monitors: [
-        {
-          user: 'Mathieu',
-          route: '19',
-          arrival: 0
-        },
+      monitors: {},
+      arrivals: [
 
-        {
-          user: 'James',
-          route: '365',
-          arrival: 20
-        },
-
-        {
-          user: 'Casey',
-          route: '11',
-          arrival: 10
-        }
       ]
     }
   },
 
   computed: {
-    getSortedMonitors: function() {
+    getSortedArrivals: function() {
       var compare = function(a, b) {
         if (a.arrival < b.arrival)
           return -1;
@@ -57,8 +42,30 @@ export default {
         return 0;
       } 
 
-      return this.monitors.sort(compare);
+      return this.arrivals.sort(compare);
     }
+  },
+
+  methods: {
+    getMonitors: () => {
+      return axios.get('http://127.0.0.1:3000/api/monitors')
+        .then(response => {
+          return response
+        })
+        .catch(err => {
+          console.error(err);
+          return null
+        });
+    }
+  },
+  mounted() {
+    this.getMonitors()
+    .then(data => {
+      this.monitors = data;
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 }
 </script>
@@ -66,7 +73,11 @@ export default {
 <style lang="scss">
 
 body {
-  background-color: #2c3e50;
+  background: #2c3e50;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #2c3e50, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #2c3e50, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-attachment: scroll;
+  min-height: 100vh;
 }
 
 .monitor-lockup {
