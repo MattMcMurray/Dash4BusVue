@@ -3,30 +3,17 @@
   <article class="media">
     <div class="media-left">
       <figure class="image is-64x64">
-        <img :src="image_src" alt="Image">
+        <h1 class="route-num">{{ route }}</h1>
       </figure>
     </div>
     <div class="media-content">
       <div class="content">
         <p>
-          <strong>{{ username }} </strong> <small>31m</small>
+          <strong>{{ username }} </strong>
           <br>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+          Your bus arrives in <strong> {{ arrival }} </strong> minutes.
         </p>
       </div>
-      <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-reply"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-retweet"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-heart"></i></span>
-          </a>
-        </div>
-      </nav>
     </div>
   </article>
 </div>
@@ -46,5 +33,21 @@ export default {
 </script>
 
 <style lang="scss">
+
+.route-num {
+  font-size: 2.5em;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Fira Mono', monospace;
+}
+
+.box {
+  width: 66vw;
+}
+
+.media-content {
+  padding-left: 1em;
+}
+
 
 </style>

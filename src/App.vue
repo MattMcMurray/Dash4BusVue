@@ -3,7 +3,15 @@
     <nav-bar></nav-bar>
 
     <section class="monitor-lockup">
-      <bus-monitor v-for="monitor in monitors" :username="monitor.user"></bus-monitor>
+      <div class="container">
+        <div class="column">
+          <bus-monitor v-for="monitor in getSortedMonitors" 
+                       :key="monitor.arrival" 
+                       :username="monitor.user" 
+                       :route="monitor.route" 
+                       :arrival="monitor.arrival"></bus-monitor>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -28,15 +36,47 @@ export default {
           user: 'James',
           route: '365',
           arrival: 20
+        },
+
+        {
+          user: 'Casey',
+          route: '11',
+          arrival: 10
         }
       ]
+    }
+  },
+
+  computed: {
+    getSortedMonitors: function() {
+      var compare = function(a, b) {
+        if (a.arrival < b.arrival)
+          return -1;
+        if (a.arrival > b.arrival)
+          return 1
+        return 0;
+      } 
+
+      return this.monitors.sort(compare);
     }
   }
 }
 </script>
 
 <style lang="scss">
+
+body {
+  background-color: #2c3e50;
+}
+
 .monitor-lockup {
-  padding-top: 5em;
+  padding-top: 1em;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

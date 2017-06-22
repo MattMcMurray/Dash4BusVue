@@ -47,7 +47,6 @@
         name: 'NavBar',
         data() {
             return {
-                msg: 'Hello world -- nav'
             }
         }
     }
@@ -55,5 +54,11 @@
 </script>
 
 <style lang="scss">
+.button.is-primary {
+    background-color: #2980b9;
 
+    &:hover {
+        background-color: lighten(#2980b9, 10%);
+    }
+}
 </style>
