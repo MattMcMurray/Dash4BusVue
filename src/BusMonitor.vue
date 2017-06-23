@@ -11,7 +11,7 @@
         <p>
           <strong>{{ username }} </strong>
           <br>
-          Your bus arrives in <strong> {{ arrival }} </strong> minutes.
+          Your bus arrives at <strong> {{ formattedTime }}</strong>, <strong>{{ minutesToArrival }}</strong>.
         </p>
       </div>
     </div>
@@ -25,8 +25,17 @@ export default {
     props: ['username', 'route', 'arrival'],
     data() {
         return {
-            image_src: 'http://via.placeholder.com/500x500'
+            image_src: 'http://via.placeholder.com/500x500',
+            arrival_time: this.arrival,
         }
+    },
+    computed: {
+      formattedTime: function() {
+        return moment(this.arrival_time).format('h:mm a');
+      },
+      minutesToArrival: function() {
+        return moment(this.arrival_time).fromNow();
+      }
     }
 }
 

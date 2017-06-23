@@ -5,7 +5,7 @@
                 <span class="icon">
                     <i class="fa fa-bus"></i>
                 </span>
-                <span>&nbsp;Dash4Bus</span>
+                <span>&nbsp;Dash4Bus 2.0</span>
             </a>
         </div>
 

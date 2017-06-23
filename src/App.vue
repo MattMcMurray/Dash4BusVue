@@ -25,7 +25,7 @@ export default {
   components: {NavBar, BusMonitor},
   data () {
     return {
-      monitors: {},
+      monitors: [],
       arrivals: [
 
       ]
@@ -48,7 +48,7 @@ export default {
 
   methods: {
     getMonitors: () => {
-      return axios.get('http://127.0.0.1:3000/api/monitors')
+      return axios.get('http://127.0.0.1:3000/api/monitors') //TODO after testing, change to relative path
         .then(response => {
           return response
         })
@@ -59,9 +59,51 @@ export default {
     }
   },
   mounted() {
+    // App is ready, start processing
     this.getMonitors()
     .then(data => {
-      this.monitors = data;
+      data.data.forEach(monitor => {
+        this.monitors.push({
+          user: monitor.user[0].profile.name,
+          route: monitor.route,
+          stop: monitor.stop
+        })
+      });
+
+      return;
+    })
+    .then(() => {
+      var transitPromises = [];
+
+      // Set up a list of promises to get active monitors
+      this.monitors.forEach(monitor => {
+        var requestURI = 'http://localhost:3000/api/stopSchedule?stop=' + monitor.stop + '&route=' + monitor.route; // TODO after testing, change to relative path
+        let user = monitor.user;
+
+        transitPromises.push(
+          axios.get(requestURI)
+            .then(response => {
+              response.user = user;
+              return response;
+            })
+            .catch(err => {
+              return null;
+            })
+        );
+      });
+
+      // Once all requests have been fulfilled, update app data
+      Promise.all(transitPromises).then(data => {
+        data.forEach(arrival => {
+          console.log(arrival.data);
+          this.arrivals.push({
+            user: arrival.user,
+            route: arrival.data[0].route,
+            arrival: moment(arrival.data[0].arrival),
+            variant: arrival.data[0].variant
+          });
+        });
+      });
     })
     .catch(err => {
       console.error(err);
